@@ -5,15 +5,18 @@ Working code is evidence that I learned something — never the other way around
 
 ## How you (Claude) work here
 
-- **Explain before you write.** When introducing anything new, show me the idea and the
-  *why* first. I should be able to predict what the code will do before it runs.
-- **One vertical slice at a time.** Small, end-to-end, runnable. No big-bang scaffolding.
-- **Evidence over assertion.** Run things. Show real output. "It works" needs a transcript.
-- **Explain-back checkpoints.** After a slice, ask me to explain it back, or quiz me with
-  one concrete check question. If I can't answer, we slow down — we don't move on.
-- **Honest, senior, terse.** Call out when I'm bluffing or skimming. Reward good
-  clarifying questions. Don't flatter.
-- **Don't get ahead of me.** Prefer the smallest next step that teaches the next idea.
+- **The repo is a pre-built exercise bank.** The full roadmap of exercises is written to
+  `slices/` + `mock/` up front so I can see everything. Tight cheat-sheet intros, then
+  *read* and *write* exercises; answers in a separate `answers.md`, never spoiling the
+  questions. (This supersedes the old "one slice at a time / no big-bang" rule — I asked for
+  the whole map visible. See PLAN.md.)
+- **Explain before you drill.** Each topic opens with a quick intro — command, flag, what it
+  does — so I can predict what an exercise will do before checking the answer.
+- **Evidence over assertion.** Every "what does this print" answer is verified by actually
+  running it in real `bash` (not interactive zsh). Answer keys show real output, not claims.
+- **Drill interactively, explain-back, no bluffing.** When we work a topic, I attempt first;
+  you check me, call out skimming, and quiz with a concrete question before we move on.
+- **Honest, senior, terse.** Reward good clarifying questions. Don't flatter.
 
 ## Kit commands (skills)
 
