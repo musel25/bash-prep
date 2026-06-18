@@ -6,41 +6,22 @@
 
 ### 1.
 ```
-eng
-mkt
-eng
-```
-**Why:** `-d','` sets the delimiter to comma; `-f2` picks the second comma-separated field from each line. Straightforward field extraction.
-
----
-
-### 2.
-```
-2024
-2024
-```
-**Why:** `-c1-4` selects byte positions 1 through 4 from each line. Useful for fixed-width formats like dates. No delimiter needed.
-
----
-
-### 3.
-```
 (three blank lines)
 ```
 **Why:** This is the core `cut` trap. `cut -d' '` splits on a **single space character**. `"alice   90"` has multiple spaces, so field 2 is an empty string (the character between the 1st and 2nd space). `cut` does not collapse runs of spaces. Verified output is three empty lines.
 
 ---
 
-### 4.
+### 2.
 ```
 90
 75
 ```
-**Why:** awk's default field separator (`$FS`) matches **one or more whitespace characters** (spaces or tabs). So `$2` correctly skips the space padding and lands on `90`. This is why awk is preferred over `cut` for human-edited space-separated data. Contrast with exercise 3.
+**Why:** awk's default field separator (`$FS`) matches **one or more whitespace characters** (spaces or tabs). So `$2` correctly skips the space padding and lands on `90`. This is why awk is preferred over `cut` for human-edited space-separated data. Contrast with exercise 1.
 
 ---
 
-### 5.
+### 3.
 ```
 bat cat dog
 bat fish
@@ -49,7 +30,7 @@ bat fish
 
 ---
 
-### 6.
+### 4.
 ```
 line1
 line2
@@ -63,7 +44,7 @@ line6
 
 ---
 
-### 7.
+### 5.
 ```
 banana
 cherry
@@ -72,7 +53,7 @@ cherry
 
 ---
 
-### 8.
+### 6.
 ```
 1 3
 2 2
@@ -82,7 +63,7 @@ cherry
 
 ---
 
-### 9.
+### 7.
 ```
 253
 ```
@@ -92,7 +73,7 @@ cherry
 
 ---
 
-### 10.
+### 8.
 ```
 1 alice 95
 3 carol 82
@@ -101,7 +82,7 @@ cherry
 
 ---
 
-### 11.
+### 9.
 `tail -n +2` output:
 ```
 line2
@@ -117,7 +98,7 @@ line4
 
 ---
 
-### 12.
+### 10.
 ```
 phn numbr: -
 ```
@@ -125,17 +106,9 @@ phn numbr: -
 
 ---
 
-### 13.
-```
-too many spaces
-```
-**Why:** `tr -s ' '` squeezes runs of repeated spaces into a single space. It does not strip leading/trailing spaces. It only works on the character you specify — it won't squeeze tabs unless you also include `'\t'`.
-
----
-
 ## Write exercises
 
-### 14.
+### 11.
 ```bash
 awk -F: '{print $1}' /etc/passwd | head -5
 ```
@@ -143,7 +116,7 @@ awk -F: '{print $1}' /etc/passwd | head -5
 
 ---
 
-### 15.
+### 12.
 ```bash
 sed -n '3,5p' data.txt
 ```
@@ -151,32 +124,8 @@ sed -n '3,5p' data.txt
 
 ---
 
-### 16.
-```bash
-awk '{s+=$1} END{print s}' numbers.txt
-```
-**Edge-case note:** If any line is blank or contains a non-numeric value in field 1, awk silently treats it as 0 — no error thrown. Test with an intentionally malformed line to confirm behaviour.
-
----
-
-### 17.
-```bash
-echo "Hello World" | tr -d 'aeiouAEIOU'
-```
-**Edge-case note:** `tr` is character-class substitution, so listing characters in the set is correct. Verify: `echo "aeiou" | tr -d 'aeiouAEIOU'` should return an empty line.
-
----
-
-### 18.
+### 13.
 ```bash
 awk -F',' '$2 > 80 {print $1, $2}' scores.csv
 ```
 **Edge-case note:** If `scores.csv` has a header row, it will pass the `> 80` test only if the header's second field looks numeric and large. Safer: `awk -F',' 'NR>1 && $2>80 {print $1, $2}'` to skip the header explicitly.
-
----
-
-### 19.
-```bash
-grep 'ERROR' log.txt | wc -l
-```
-**Edge-case note:** `grep -c 'ERROR' log.txt` is a one-command alternative that counts matching lines directly. `wc -l` counts newlines, which works the same for non-empty output. Test with a file where `ERROR` appears twice on one line — both commands count it as 1 (they count lines, not occurrences).

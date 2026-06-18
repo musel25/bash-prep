@@ -6,26 +6,6 @@
 
 **Command:**
 ```bash
-printf "INFO started\nERROR disk full\nINFO running\nERROR timeout\nINFO done\n" > /tmp/srv.log
-grep -n -v INFO /tmp/srv.log
-```
-
-**Output (verified in bash):**
-```
-2:ERROR disk full
-4:ERROR timeout
-```
-
-**Why:** `-v` inverts the match (keep lines that do NOT contain `INFO`); `-n` prepends the line number. Order of flags doesn't matter; you can write `-nv` or `-vn`. Note: this is case-sensitive — a line with `info` would pass through.
-
-**How to test:** Add a line `info lowercase` and confirm it is NOT filtered out by `-v INFO`.
-
----
-
-### 2.
-
-**Command:**
-```bash
 printf "connected from 10.0.0.1\nfailed from 192.168.1.5\nlocal 127.0.0.1\n" > /tmp/access.log
 grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" /tmp/access.log
 ```
@@ -43,7 +23,7 @@ grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" /tmp/access.log
 
 ---
 
-### 3.
+### 2.
 
 **Command:**
 ```bash
@@ -66,7 +46,7 @@ sort /tmp/scores.txt
 
 ---
 
-### 4.
+### 3.
 
 **Command:**
 ```bash
@@ -89,7 +69,7 @@ uniq -c /tmp/fruit_counts.txt
 
 ---
 
-### 5.
+### 4.
 
 **Command:**
 ```bash
@@ -113,7 +93,7 @@ Exit code: `123` (partial failure)
 
 ---
 
-### 6.
+### 5.
 
 **Command:**
 ```bash
@@ -137,7 +117,7 @@ processing /tmp/logs/c.log /tmp/logs/b.log /tmp/logs/a.log
 
 ---
 
-### 7.
+### 6.
 
 **Command:**
 ```bash
@@ -164,7 +144,7 @@ The idiom works on any list of values — log levels, IP addresses, HTTP codes, 
 
 ---
 
-### 8.
+### 7.
 
 **Command:**
 ```bash
@@ -185,7 +165,7 @@ cot
 
 ---
 
-### 9.
+### 8.
 
 ```bash
 grep -ril "error" /home/musel/Github/bash-prep --include="*.py"
@@ -197,7 +177,7 @@ grep -ril "error" /home/musel/Github/bash-prep --include="*.py"
 
 ---
 
-### 10.
+### 9.
 
 ```bash
 find /var/log -type f -mtime -7 -size +10M
@@ -209,7 +189,7 @@ find /var/log -type f -mtime -7 -size +10M
 
 ---
 
-### 11.
+### 10.
 
 ```bash
 grep -oE "[0-9]{3}$" /tmp/access.log | sort | uniq -c | sort -nr
@@ -221,7 +201,7 @@ grep -oE "[0-9]{3}$" /tmp/access.log | sort | uniq -c | sort -nr
 
 ---
 
-### 12.
+### 11.
 
 ```bash
 find /tmp/data -name "*.csv" -print0 | xargs -0 rm
@@ -230,15 +210,3 @@ find /tmp/data -name "*.csv" -print0 | xargs -0 rm
 **Why:** `-print0` separates paths with null bytes so spaces in filenames are safe. `xargs -0` reads null-delimited input and passes all paths to a single `rm` call. Using plain `find … | xargs rm` would split `my data.csv` into `my` and `data.csv` and try to delete those (wrong files, or errors).
 
 **Edge case / test:** Create a file `/tmp/data/my file.csv` and verify it is deleted. Check that a `.txt` file in the same directory is untouched.
-
----
-
-### 13.
-
-```bash
-find /tmp/src -name "*.txt" | xargs -I{} cp {} /tmp/dst/
-```
-
-**Why:** `xargs -I{}` replaces `{}` in the template with one input line at a time, so it invokes `cp <file> /tmp/dst/` once per file. This is one-file-per-invocation (like `-exec \;`), not batched. Note the trailing `/` on `/tmp/dst/` — without it, if there is only one file, `cp` might rename it to `/tmp/dst` instead of copying into the directory.
-
-**Edge case / test:** This form is still broken for filenames with spaces — `-I{}` reads one line per invocation but the `{}` substitution is still split by the shell if unquoted. Safer version: `find /tmp/src -name "*.txt" -print0 | xargs -0 -I{} cp {} /tmp/dst/`. Test with `touch "/tmp/src/my file.txt"`.

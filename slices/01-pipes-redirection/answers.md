@@ -6,19 +6,6 @@
 
 ### 1.
 ```bash
-echo "hello world" | wc -w
-```
-**Output:**
-```
-2
-```
-**Why:** `echo` writes the string to stdout; the pipe feeds it to `wc -w` which counts
-words. "hello" and "world" = 2.
-
----
-
-### 2.
-```bash
 ls /nonexistent | wc -l
 ```
 **Output (terminal):**
@@ -32,7 +19,7 @@ the pipe and goes straight to the terminal.
 
 ---
 
-### 3.
+### 2.
 ```bash
 ls /nonexistent 2>&1 | wc -l
 ```
@@ -46,7 +33,7 @@ message and counts 1.
 
 ---
 
-### 4.
+### 3.
 ```bash
 { echo "stdout"; echo "stderr" >&2; } 2>&1 >capture.txt
 ```
@@ -74,23 +61,7 @@ How to test it: run both variants, `cat capture.txt`, and watch what hits the te
 
 ---
 
-### 5.
-```bash
-echo "first" > f.txt
-echo "second" > f.txt
-cat f.txt
-```
-**Output:**
-```
-second
-```
-**Why:** `>` truncates the file to zero bytes before writing. The first `echo` creates
-`f.txt` with "first"; the second `>` wipes it and writes "second". Use `>>` to append
-instead.
-
----
-
-### 6.
+### 4.
 ```bash
 false | true
 echo "exit: $?"
@@ -113,7 +84,7 @@ command overwrites it.
 
 ---
 
-### 7.
+### 5.
 ```bash
 set -o pipefail
 grep NOMATCH /etc/hostname | wc -l
@@ -131,7 +102,7 @@ overall pipeline exit is 1.
 
 ---
 
-### 8.
+### 6.
 ```bash
 echo -e "a\nb\nc" | tee /tmp/out.txt | wc -l
 ```
@@ -153,7 +124,7 @@ lines. Nothing is lost to either consumer.
 
 ## Write exercises
 
-### 9. Save only stderr to `errors.log`
+### 7. Save only stderr to `errors.log`
 
 ```bash
 make build 2>errors.log
@@ -165,18 +136,7 @@ in the file but normal build output still hits the screen.
 
 ---
 
-### 10. Append `date` output to `log.txt`
-
-```bash
-date >> log.txt
-```
-`>>` opens the file in append mode; the existing content is preserved.
-
-Edge case: if `log.txt` doesn't exist, `>>` creates it — that's usually fine.
-
----
-
-### 11. Discard both stdout and stderr, keep exit code
+### 8. Discard both stdout and stderr, keep exit code
 
 ```bash
 curl https://example.com &>/dev/null
@@ -190,7 +150,7 @@ you should still see a non-zero exit code even though nothing printed.
 
 ---
 
-### 12. Detect which pipeline stage failed
+### 9. Detect which pipeline stage failed
 
 ```bash
 generate_data | transform | load
@@ -202,16 +162,3 @@ Capture immediately: `statuses=("${PIPESTATUS[@]}")` before any other command re
 
 Alternative: add `set -o pipefail` at the top of the script to make the whole pipeline
 fail fast if any stage fails (but you lose the granularity of *which* stage failed).
-
----
-
-### 13. Output to terminal and file simultaneously
-
-```bash
-some_cmd | tee run.log
-```
-`tee` writes to both stdout (terminal) and `run.log`. Use `tee -a run.log` to append
-instead of overwrite on repeated runs.
-
-Edge case: if `some_cmd` writes to stderr, those lines bypass `tee`. To capture stderr
-too: `some_cmd 2>&1 | tee run.log`.

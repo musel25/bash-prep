@@ -188,16 +188,6 @@ make test || { echo "Tests failed, aborting"; exit 1; }
 ### 14.
 
 ```bash
-[ -r /etc/shadow ] && echo "readable" || echo "not readable"
-```
-
-**Edge-case note:** `-r` tests read permission for the **current user** (not root). On most systems this will print `"not readable"` unless run as root. Test: run once as yourself, once with `sudo`.
-
----
-
-### 15.
-
-```bash
 set -euo pipefail
 ```
 
@@ -211,20 +201,7 @@ Place this at the top of every non-trivial script, right after the shebang (`#!/
 
 ---
 
-### 16.
-
-```bash
-n=150
-if [ "$n" -gt 100 ]; then
-  echo "big"
-fi
-```
-
-`[ $n > 100 ]` is wrong because `>` is a **redirection** inside `[ ]` — it creates a file named `100` in the current directory and the condition always evaluates as true (non-empty string on left). Always use `-gt`, `-lt`, etc. for numeric comparisons.
-
----
-
-### 17.
+### 15.
 
 **Bug:** If `send_alert "success"` fails (e.g., network error), then `||` fires `send_alert "failure"` even though the job succeeded. You end up sending a false failure alert.
 
@@ -239,19 +216,3 @@ fi
 ```
 
 `if/then/else/fi` is the only truly safe conditional in bash. The `a && b || c` pattern is fine when `b` cannot fail; it's a bug waiting to happen otherwise.
-
----
-
-### 18.
-
-```bash
-curl https://example.com -o /dev/null -s
-rc=$?
-if [ "$rc" -eq 0 ]; then
-  echo "ok"
-else
-  echo "fail"
-fi
-```
-
-**Why capture first:** `$?` is reset by every command. If you do `if [ $? -eq 0 ]`, the `[ ]` command itself runs between `curl` and your check, overwriting `$?`. Capture into `rc` immediately after the command you care about.

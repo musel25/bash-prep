@@ -144,32 +144,3 @@ Always quote the variable. Test with `file="my report.txt"` and a file by that n
 grep "$@"
 ```
 `"$@"` is the only correct form — it expands each argument as a separate quoted word, so arguments with spaces survive intact. Test: call your wrapper as `wrapper "search term" myfile.txt` and verify grep receives exactly two arguments.
-
----
-
-**11.** Store the year and print it:
-```bash
-year=$(date +%Y)
-echo "Year: $year"
-```
-`$(...)` is preferred over backticks because it nests cleanly and is easier to read. The output will be whatever year the system clock shows.
-
----
-
-**12.** List `.txt` files safely with `nullglob`:
-```bash
-shopt -s nullglob
-files=(*.txt)
-echo "${files[@]}"
-```
-With `nullglob` enabled, `*.txt` expands to nothing (empty array) when there are no matches, so `echo` prints a blank line rather than the literal `*.txt`. Test in an empty directory to confirm no output vs. the default literal-pattern behaviour.
-
----
-
-**13.** Safe empty-check for a variable that may contain spaces or be unset:
-```bash
-if [ -z "${msg}" ]; then
-  echo "msg is empty or unset"
-fi
-```
-`"${msg}"` is always a single quoted token even if `msg` is empty or contains spaces, so `[` never sees extra arguments. To also catch an unset variable explicitly, use `[ -z "${msg-}" ]` (the `-` provides an empty default if unset without erroring).

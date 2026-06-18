@@ -169,21 +169,7 @@ Exit status: `127`
 
 ---
 
-## 9. Parameter expansion one-liner
-
-```bash
-word="archive.tar.gz"
-echo ${#word}          # → 14
-echo ${word%%.*}       # → archive
-```
-
-`${word%%.*}` strips the longest match of `.*` from the end — everything from the first dot onward is removed.
-
-**Edge case:** If `$word` has no dot at all (e.g. `Makefile`), `${word%%.*}` returns the whole string unchanged — correct behaviour.
-
----
-
-## 10. Function with `local`
+## 9. Function with `local`
 
 ```bash
 #!/usr/bin/env bash
@@ -207,7 +193,7 @@ Hello, World!
 
 ---
 
-## 11. `while read -r` loop over a file
+## 10. `while read -r` loop over a file
 
 ```bash
 #!/usr/bin/env bash
@@ -223,30 +209,7 @@ done < /etc/shells
 
 ---
 
-## 12. C-style loop — squares of 1 through 5
-
-```bash
-#!/usr/bin/env bash
-
-for ((i=1; i<=5; i++)); do
-  echo "$((i * i))"
-done
-```
-
-**Output:**
-```
-1
-4
-9
-16
-25
-```
-
-**Note:** `(( ))` (no `$`) is used for the loop header because it is evaluated as a condition. `$(( ))` (with `$`) is used to expand an arithmetic result as a string for `echo`.
-
----
-
-## 13. Capstone — `linecount.sh`
+## 11. Capstone — `linecount.sh`
 
 ```bash
 #!/usr/bin/env bash

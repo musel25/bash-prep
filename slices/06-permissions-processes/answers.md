@@ -45,24 +45,7 @@ Breakdown:
 
 ---
 
-## 3. `chmod 600` output
-
-```bash
-$ touch secretkey && chmod 600 secretkey && ls -l secretkey
-```
-
-Real output:
-```
--rw------- 1 musel musel 0 Jun 18 14:07 secretkey
-```
-
-**Why:** 6 = 4+2 = rw-; 0 = ---. Owner can read and write; group and other have zero access.
-
-*How to test:* try `su - otheruser` and `cat secretkey` — you'll get Permission denied. This is the required mode for SSH private keys (`~/.ssh/id_rsa`); `ssh` will refuse to use a key that's too permissive.
-
----
-
-## 4. Directory `drw-r--r--` (no `x`)
+## 3. Directory `drw-r--r--` (no `x`)
 
 Real experiment:
 ```bash
@@ -86,7 +69,7 @@ total 0
 
 ---
 
-## 5. Three parallel `sleep 2 &` + `wait`
+## 4. Three parallel `sleep 2 &` + `wait`
 
 ```bash
 sleep 2 &
@@ -108,7 +91,7 @@ sys     0m0.003s
 
 ---
 
-## 6. `kill PID` vs `kill -9 PID`
+## 5. `kill PID` vs `kill -9 PID`
 
 **(a) `kill 1234`** — sends **SIGTERM** (signal 15). This is a polite request: "please clean up and exit." The process **can catch it**, run cleanup handlers, flush buffers, remove lock files, and then exit gracefully — or it can ignore it entirely.
 
@@ -120,7 +103,7 @@ sys     0m0.003s
 
 ---
 
-## 7. `$!` and killing the background job
+## 6. `$!` and killing the background job
 
 ```bash
 sleep 99 &
@@ -142,7 +125,7 @@ This snippet: (1) starts `sleep 99` in the background, (2) prints its PID, (3) s
 
 ---
 
-## 8. `for` loop grep vs `grep *.txt`
+## 7. `for` loop grep vs `grep *.txt`
 
 ```bash
 # (a) — for loop
@@ -169,7 +152,7 @@ real    0m0.001s
 
 ---
 
-## 9. `deploy.sh` — executable by all, writable only by owner
+## 8. `deploy.sh` — executable by all, writable only by owner
 
 ```bash
 chmod 755 deploy.sh
@@ -187,21 +170,7 @@ $ touch deploy.sh && chmod 755 deploy.sh && ls -l deploy.sh
 
 ---
 
-## 10. Private SSH key — owner read/write only
-
-```bash
-chmod 600 ~/.ssh/id_rsa
-```
-
-600 = owner: rw- (6), group: --- (0), other: --- (0).
-
-*Why it matters:* the `ssh` client will refuse to use a private key that is accessible to group or other, printing: `Permissions 0664 for 'id_rsa' are too open.` chmod 600 is the fix.
-
-*Edge-case test:* `ls -l ~/.ssh/id_rsa` should show `-rw-------`. Also verify the `.ssh/` directory itself is `700` — a world-readable directory exposes the files inside.
-
----
-
-## 11. `xargs -P8` for parallel curl
+## 9. `xargs -P8` for parallel curl
 
 ```bash
 xargs -P8 -I{} curl -O {} < urls.txt
@@ -220,7 +189,7 @@ Real timing intuition: 8 parallel downloads from a remote server that each take 
 
 ---
 
-## 12. Escalating from SIGTERM to SIGKILL
+## 10. Escalating from SIGTERM to SIGKILL
 
 ```bash
 # Step 1: politely ask
@@ -241,33 +210,3 @@ kill -9 1234
 *Why the two-step approach:* SIGTERM allows the process to flush write buffers, release file locks, remove PID files, and close network connections cleanly. Jumping straight to SIGKILL risks data corruption or stale locks that block future starts.
 
 *Edge case:* a process can also be in an uninterruptible sleep state (D state in `ps` STAT column — typically waiting on a stuck kernel I/O operation). In that state even `kill -9` won't work until the I/O completes or times out. Check `ps aux` for `D` in the STAT column.
-
----
-
-## 13. Three parallel downloads with stored PIDs
-
-```bash
-curl -O https://example.com/file1.tar.gz &
-PID1=$!
-
-curl -O https://example.com/file2.tar.gz &
-PID2=$!
-
-curl -O https://example.com/file3.tar.gz &
-PID3=$!
-
-wait $PID1 $PID2 $PID3
-echo "all downloads complete"
-```
-
-`$!` is captured **immediately** after each `&` before it can be overwritten. `wait` with explicit PIDs blocks until all three finish and returns a non-zero exit status if any one of them failed — useful for error detection.
-
-*Alternative (simpler, no stored PIDs):*
-```bash
-curl -O https://example.com/file1.tar.gz &
-curl -O https://example.com/file2.tar.gz &
-curl -O https://example.com/file3.tar.gz &
-wait
-```
-
-`wait` with no arguments waits for *all* background children. The difference: `wait $PID1 $PID2 $PID3` lets you check individual exit statuses via `$?` after each `wait` call; bare `wait` gives you the exit status of the last job only.

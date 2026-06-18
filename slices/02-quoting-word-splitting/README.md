@@ -119,9 +119,3 @@ Run in a directory with no `.xyz` files. What prints?
 **9.** You have a variable `file` that might contain spaces (e.g. `"my report.txt"`). Write the `wc -l` command that handles this safely.
 
 **10.** Pass all positional arguments of a wrapper script through to `grep`, preserving any arguments that contain spaces.
-
-**11.** Write a one-liner that stores today's year in a variable `year` using command substitution, then prints `Year: 2026` (or whatever the current year is).
-
-**12.** List only `.txt` files in the current directory using a glob, but ensure the glob itself is never passed literally to `echo` if there are no matches (hint: `nullglob`).
-
-**13.** Check if a variable `msg` is empty in a way that is safe even when `msg` might contain spaces or be completely unset.

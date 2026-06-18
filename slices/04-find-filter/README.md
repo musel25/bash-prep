@@ -86,15 +86,6 @@ Try each before peeking at answers.md.
 
 **1.**
 ```bash
-printf "INFO started\nERROR disk full\nINFO running\nERROR timeout\nINFO done\n" > /tmp/srv.log
-grep -n -v INFO /tmp/srv.log
-```
-What does this print?
-
----
-
-**2.**
-```bash
 printf "connected from 10.0.0.1\nfailed from 192.168.1.5\nlocal 127.0.0.1\n" > /tmp/access.log
 grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" /tmp/access.log
 ```
@@ -102,7 +93,7 @@ What does this print? What would change if you dropped the `-o`?
 
 ---
 
-**3.**
+**2.**
 ```bash
 printf "8\n10\n9\n100\n2\n" > /tmp/scores.txt
 sort /tmp/scores.txt
@@ -111,7 +102,7 @@ What is the output? Is it correct if you wanted numbers in ascending order?
 
 ---
 
-**4.**
+**3.**
 ```bash
 printf "apple\nbanana\napple\nbanana\nbanana\napple\n" > /tmp/fruit_counts.txt
 uniq -c /tmp/fruit_counts.txt
@@ -120,7 +111,7 @@ What does this print? How many distinct values do you expect?
 
 ---
 
-**5.**
+**4.**
 ```bash
 mkdir -p /tmp/reports
 touch "/tmp/reports/jan.txt" "/tmp/reports/feb report.txt"
@@ -130,7 +121,7 @@ Does this work? What happens and why?
 
 ---
 
-**6.**
+**5.**
 ```bash
 mkdir -p /tmp/logs
 touch /tmp/logs/a.log /tmp/logs/b.log /tmp/logs/c.log
@@ -141,7 +132,7 @@ What is different about the two `find` commands? How many times is `echo` called
 
 ---
 
-**7.**
+**6.**
 ```bash
 printf "python\nbash\npython\ngo\nbash\npython\nrust\ngo\nbash\npython\n" > /tmp/langs.txt
 sort /tmp/langs.txt | uniq -c | sort -nr
@@ -150,7 +141,7 @@ What does this print? Name the three-stage idiom.
 
 ---
 
-**8.**
+**7.**
 ```bash
 printf "c.t\ncat\ncot\n" > /tmp/dotfile.txt
 grep "c.t" /tmp/dotfile.txt
@@ -161,12 +152,10 @@ How many lines match? Which ones, and why might that surprise you?
 
 ### Write — how would you …?
 
-**9.** List every `.py` file under `/home/musel/Github/bash-prep` that contains the word `error` (case-insensitive). Print only the filenames, not the matching lines.
+**8.** List every `.py` file under `/home/musel/Github/bash-prep` that contains the word `error` (case-insensitive). Print only the filenames, not the matching lines.
 
-**10.** Find all regular files in `/var/log` modified in the last 7 days and larger than 10 MB. Print only their paths.
+**9.** Find all regular files in `/var/log` modified in the last 7 days and larger than 10 MB. Print only their paths.
 
-**11.** Count how many times each HTTP status code appears in a log file `/tmp/access.log` where each line ends with a three-digit code (e.g. `200`, `404`, `500`). Output should be sorted highest-count first.
+**10.** Count how many times each HTTP status code appears in a log file `/tmp/access.log` where each line ends with a three-digit code (e.g. `200`, `404`, `500`). Output should be sorted highest-count first.
 
-**12.** You have a directory `/tmp/data` with filenames that may contain spaces. Safely delete every `.csv` file in it (without touching other files). Use `find` with `-print0` and `xargs -0`.
-
-**13.** Using `xargs -I{}`, copy every `.txt` file found under `/tmp/src` into `/tmp/dst`, preserving the filename. (Assume `/tmp/dst` already exists.)
+**11.** You have a directory `/tmp/data` with filenames that may contain spaces. Safely delete every `.csv` file in it (without touching other files). Use `find` with `-print0` and `xargs -0`.

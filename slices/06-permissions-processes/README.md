@@ -87,14 +87,7 @@ ls -l /home/musel/Github/bash-prep/script.sh
 ```
 What does `-rwx--x--x` mean for owner, group, and other? Can a user in the `musel` group read the file's contents?
 
-**3.** What does this print, and why?
-```bash
-touch secretkey
-chmod 600 secretkey
-ls -l secretkey
-```
-
-**4.** A directory has permissions `drw-r--r--` (no `x` for anyone). You run:
+**3.** A directory has permissions `drw-r--r--` (no `x` for anyone). You run:
 ```bash
 ls trapped/
 ls -l trapped/
@@ -102,7 +95,7 @@ cat trapped/file.txt
 ```
 Which commands succeed, which fail, and why?
 
-**5.** What does this snippet do? How many jobs run at the same time, and roughly how long does it take?
+**4.** What does this snippet do? How many jobs run at the same time, and roughly how long does it take?
 ```bash
 sleep 2 &
 sleep 2 &
@@ -110,20 +103,20 @@ sleep 2 &
 wait
 ```
 
-**6.** What is the difference between these two signals, and which one can a process ignore?
+**5.** What is the difference between these two signals, and which one can a process ignore?
 ```bash
 kill 1234        # (a)
 kill -9 1234     # (b)
 ```
 
-**7.** What does `$!` refer to, and what does this do?
+**6.** What does `$!` refer to, and what does this do?
 ```bash
 sleep 99 &
 echo "PID: $!"
 kill $!
 ```
 
-**8.** Why is the second command faster than the first, even though both search for the same pattern in the same files?
+**7.** Why is the second command faster than the first, even though both search for the same pattern in the same files?
 ```bash
 # (a)
 for f in *.txt; do grep "hello" "$f"; done
@@ -134,12 +127,8 @@ grep "hello" *.txt
 
 ### Write — how would you …?
 
-**9.** Make a script `deploy.sh` executable by everyone, but writable only by the owner. Write the `chmod` command using octal.
+**8.** Make a script `deploy.sh` executable by everyone, but writable only by the owner. Write the `chmod` command using octal.
 
-**10.** You need a private SSH key file that only the owner can read or write (no permissions for group or other). Write the `chmod` command.
+**9.** You have 100 URLs in `urls.txt`, one per line. You want to `curl` each URL but only run 8 downloads at a time to avoid hammering the server. Write the one-liner using `xargs`.
 
-**11.** You have 100 URLs in `urls.txt`, one per line. You want to `curl` each URL but only run 8 downloads at a time to avoid hammering the server. Write the one-liner using `xargs`.
-
-**12.** A process is running but ignoring `kill PID` (SIGTERM). What do you do next? Write the commands, explaining why you escalate.
-
-**13.** You backgrounded three jobs and stored their PIDs. Write a snippet that starts three `curl` downloads in parallel and waits for all of them before continuing.
+**10.** A process is running but ignoring `kill PID` (SIGTERM). What do you do next? Write the commands, explaining why you escalate.

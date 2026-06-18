@@ -182,18 +182,12 @@ fi
 
 **13.** Run `make test`; if it fails, print `"Tests failed, aborting"` and exit with code 1. Use only `&&`/`||`, no `if`.
 
-**14.** Write a one-liner that checks whether `/etc/shadow` is readable by the current user and prints either `"readable"` or `"not readable"`. Use a file test.
+**14.** Write the standard three-option safety header for a script that should abort on errors, treat unset variables as errors, and catch failures inside pipelines.
 
-**15.** Write the standard three-option safety header for a script that should abort on errors, treat unset variables as errors, and catch failures inside pipelines.
-
-**16.** Write an `if` block that prints `"big"` if a variable `n` is numerically greater than 100, using `[ ]`. Why is `[ $n > 100 ]` wrong here?
-
-**17.** A colleague writes:
+**15.** A colleague writes:
 
 ```bash
 run_job && send_alert "success" || send_alert "failure"
 ```
 
 Explain the bug and rewrite it correctly using `if/then/else/fi`.
-
-**18.** Capture the exit code of `curl https://example.com -o /dev/null -s` into a variable `rc`, then print `"ok"` or `"fail"` depending on it — without using `$?` a second time.

@@ -184,23 +184,15 @@ Run it as: `echo "hello" | bash script.sh`
 
 ### Write — how would you …?
 
-**9.** Write a one-liner that prints the length of the string stored in `$word`, then strips everything from the first `.` to the end (i.e. get just the base name before the first dot) — using only parameter expansion, no external commands.
+**9.** Write a function `greet` that takes one argument (a name) and prints `Hello, <name>!`. Use `local` correctly. Call it with `greet "World"`.
 
 ---
 
-**10.** Write a function `greet` that takes one argument (a name) and prints `Hello, <name>!`. Use `local` correctly. Call it with `greet "World"`.
+**10.** Write a `while read -r` loop that reads `/etc/shells` line by line and prints each line prefixed with `shell:`. (Redirect the file into the loop, do not use `cat | while`.)
 
 ---
 
-**11.** Write a `while read -r` loop that reads `/etc/shells` line by line and prints each line prefixed with `shell:`. (Redirect the file into the loop, do not use `cat | while`.)
-
----
-
-**12.** Write a C-style `for` loop that prints the squares of 1 through 5 using `$(( ))`.
-
----
-
-**13. (Capstone)** Write a script `linecount.sh` that:
+**11. (Capstone)** Write a script `linecount.sh` that:
 - Takes one or more file arguments (`$@`)
 - Prints `<count> <filename>` for each file
 - Skips (with an error message to stderr) any argument that is not a regular file

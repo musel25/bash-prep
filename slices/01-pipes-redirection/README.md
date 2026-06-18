@@ -54,29 +54,21 @@ Try each before peeking at answers.md.
 
 **1.**
 ```bash
-echo "hello world" | wc -w
-```
-What does this print?
-
----
-
-**2.**
-```bash
 ls /nonexistent | wc -l
 ```
 What prints to the terminal and why? What does `wc -l` count?
 
 ---
 
-**3.**
+**2.**
 ```bash
 ls /nonexistent 2>&1 | wc -l
 ```
-How is this different from exercise 2? What does `wc -l` count now?
+How is this different from exercise 1? What does `wc -l` count now?
 
 ---
 
-**4.**
+**3.**
 ```bash
 { echo "stdout"; echo "stderr" >&2; } 2>&1 >capture.txt
 ```
@@ -85,17 +77,7 @@ After this runs, what is in `capture.txt`? What appears on the terminal?
 
 ---
 
-**5.**
-```bash
-echo "first" > f.txt
-echo "second" > f.txt
-cat f.txt
-```
-What does `cat f.txt` print?
-
----
-
-**6.**
+**4.**
 ```bash
 false | true
 echo "exit: $?"
@@ -105,7 +87,7 @@ What are the two values printed? Why might this be dangerous in a script?
 
 ---
 
-**7.**
+**5.**
 ```bash
 set -o pipefail
 grep NOMATCH /etc/hostname | wc -l
@@ -115,7 +97,7 @@ What does `wc -l` print? What does `echo "exit: $?"` print? Why?
 
 ---
 
-**8.**
+**6.**
 ```bash
 echo -e "a\nb\nc" | tee /tmp/out.txt | wc -l
 ```
@@ -125,17 +107,11 @@ What prints to the terminal? What ends up in `/tmp/out.txt`?
 
 ### Write — how would you …?
 
-**9.** Run `make build` and save **only stderr** to `errors.log`, letting stdout still
+**7.** Run `make build` and save **only stderr** to `errors.log`, letting stdout still
 appear on the terminal.
 
-**10.** Append the output of `date` to a file called `log.txt` without overwriting anything
-already in it.
-
-**11.** Run `curl https://example.com` and silently discard **both** stdout and stderr (you
+**8.** Run `curl https://example.com` and silently discard **both** stdout and stderr (you
 only care about the exit code).
 
-**12.** Find out whether any individual command in the pipeline
+**9.** Find out whether any individual command in the pipeline
 `generate_data | transform | load` failed, and which one.
-
-**13.** Run `some_cmd` and have its output go to **both** the terminal and a file called
-`run.log` at the same time.
