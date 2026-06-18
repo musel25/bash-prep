@@ -91,3 +91,6 @@ mock/answers.md              answer key for the mock bank
 - 2026-06-18 — Re-mapped for the real target (Modal FDE-ML, ~2wk, reading-focused). Added
   interview overlay + Slice 6 (permissions/processes/concurrency); signals/bg-jobs pulled
   back in. Now 7 slices. Still no code — slice 1 next.
+- 2026-06-18 — Started drilling Slice 1 (pipes & redirection). Added `PROGRESS.md` visual
+  tracker (119 exercises total). Slice 1: ex 1 ✅, ex 2 🔁 (stderr-bypasses-pipe, re-test
+  cold), ex 3 ✅. Drilling attempt-first, answers verified in real bash.
