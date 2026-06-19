@@ -1,10 +1,10 @@
 # Progress — bash-prep
 
-**Overall:** 3 / 97 drilled · **Slice 1 in progress** (3/9)
+**Overall:** 9 / 97 drilled · **Slice 1 complete** ✅ (9/9)
 
 ```
-Slice 1  █████········· 3/9    pipes & redirection   ← here
-Slice 2  ·············· 0/10   quoting & word-splitting
+Slice 1  ██████████████ 9/9    pipes & redirection   ✅ (re-test Read 4 cold)
+Slice 2  ·············· 0/10   quoting & word-splitting   ← here next
 Slice 3  ·············· 0/15   exit codes & conditionals
 Slice 4  ·············· 0/11   find & filter
 Slice 5  ·············· 0/13   text processing
@@ -31,8 +31,20 @@ and flipped to ✅ on a clean re-attempt.
 
 ## Slice 1 — Pipes & redirection  (Read 1–6, Write 7–9)
 
-Read:  1 ✅   2 ✅   3 ✅   4 ⬜   5 ⬜   6 ⬜
-Write: 7 ⬜   8 ⬜   9 ⬜
+Read:  1 ✅   2 ✅   3 ✅   4 ✅   5 ✅   6 ✅
+Write: 7 ✅   8 ✅   9 ✅
+
+- ✅ **Write 7** (`make build 2>errors.log`) — after a detour: first tried `2>&1 | touch`,
+  which merges channels (wrong direction) and `touch` discards piped data. Landed it.
+- ✅ **Write 8** (`curl ... >/dev/null 2>&1`) — first try; understood exit code survives.
+- ✅ **Write 9** (`${PIPESTATUS[@]}` on the next line) — right tool; corrected the "pipe it
+  to the end" phrasing (PIPESTATUS is a variable, read it immediately, don't pipe into it).
+
+- ✅ **Read 4** (pipeline exit code) — rebuilt from fundamentals; got `exit: 0`. Re-test
+  cold: the `PIPESTATUS` line prints `0`, not `1 0`, because the preceding `echo` overwrites
+  PIPESTATUS — must read it on the line *immediately* after the pipe.
+- ✅ **Read 5** (`set -o pipefail`) — got `wc`=0 and `exit: 1`. Correction logged: it's
+  **grep** that failed (exit 1, no match), not wc; pipefail surfaced it. PIPESTATUS = `1 0`.
 
 - ✅ **Read 1** (`ls /nonexistent | wc -l`) — cleared on cold re-test. Core mechanism solid
   (stderr bypasses pipe → `wc -l` counts 0). One slip earlier: invented a phantom "1";
