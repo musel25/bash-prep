@@ -1,11 +1,11 @@
 # Progress — bash-prep
 
-**Overall:** 9 / 97 drilled · **Slice 1 complete** ✅ (9/9)
+**Overall:** 19 / 97 drilled · **Slice 2 complete** ✅ (10/10)
 
 ```
 Slice 1  ██████████████ 9/9    pipes & redirection   ✅ (re-test Read 4 cold)
-Slice 2  ·············· 0/10   quoting & word-splitting   ← here next
-Slice 3  ·············· 0/15   exit codes & conditionals
+Slice 2  ██████████████ 10/10  quoting & word-splitting   ✅
+Slice 3  ·············· 0/15   exit codes & conditionals   ← here next
 Slice 4  ·············· 0/11   find & filter
 Slice 5  ·············· 0/13   text processing
 Slice 6  ·············· 0/10   permissions, processes & concurrency
@@ -56,7 +56,17 @@ Write: 7 ✅   8 ✅   9 ✅
   `>file` moves fd1; fd2 stays pinned to the terminal.
 
 ## Slice 2 — Quoting & word-splitting  (Read 1–8, Write 9–10)
-Read/Write: 1–10 ⬜
+Read:  1 ✅   2 ✅   3 ✅   4 ✅   5 ✅   6 ✅   7 ✅   8 ✅
+Write: 9 ✅   10 ✅
+
+- Read 8 bonus noted: zsh *errors* on an unmatched glob (`no matches found`) while bash
+  leaves the literal pattern — concrete reason this project drills in bash, not zsh.
+- ✅ **Write 9** — quoting was correct (`"$file"`), but first answer `echo "$file" | wc -l`
+  counts the *filename string* (always 1), not the file. Fix: `wc -l "$file"`. read-vs-echo slip.
+
+- ✅ **Read 5** (`[ -z $x ]`) — right output (`not empty`) but for the wrong reason: the
+  unquoted split makes `[` crash with "too many arguments" (non-zero), so `||` fires. The
+  logic never ran. Lesson: always quote vars in `[ ]` → `[ -z "$x" ]`.
 
 ## Slice 3 — Exit codes & conditionals  (Read 1–12, Write 13–15)
 Read/Write: 1–15 ⬜
