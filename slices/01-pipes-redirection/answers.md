@@ -67,20 +67,26 @@ false | true
 echo "exit: $?"
 echo "PIPESTATUS: ${PIPESTATUS[@]}"
 ```
-**Output:**
+**Output (verified in bash):**
 ```
 exit: 0
-PIPESTATUS: 1 0
+PIPESTATUS: 0
 ```
 **Why:** `$?` is the exit code of the **last** command in the pipeline (`true` → 0).
-`false` failed (exit 1) but its code is masked. `${PIPESTATUS[@]}` preserves per-command
-codes: index 0 = `false` (1), index 1 = `true` (0).
+`false` failed (exit 1) but its code is masked.
+
+**The trap (this is the whole point of the exercise):** `${PIPESTATUS[@]}` prints **`0`**
+here, *not* `1 0`. The intervening `echo "exit: $?"` is itself a command, so it
+**overwrites `PIPESTATUS`** with its own (single-element, 0) status before the third line
+reads it. To actually see the per-stage codes you must read PIPESTATUS on the line
+*immediately* after the pipeline:
+```bash
+false | true
+echo "${PIPESTATUS[@]}"   # → 1 0   (index 0 = false → 1, index 1 = true → 0)
+```
 
 **Danger:** In a script without `set -o pipefail`, `false | true` looks like success.
 Silent data-loss pipelines (`generate | upload`) can fail invisibly.
-
-Note: `${PIPESTATUS[@]}` must be captured **immediately** after the pipeline — the next
-command overwrites it.
 
 ---
 
